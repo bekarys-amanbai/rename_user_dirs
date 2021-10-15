@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# version: 0.1
+# version: 0.2
 
 import argparse
 from pathlib import Path
@@ -34,9 +34,16 @@ home = Path.home()
 user_dirs = home / Path('.config/user-dirs.dirs')
 user_dirs_locale = home / Path('.config/user-dirs.locale')
 
-parser = argparse.ArgumentParser()
-parser.add_argument('lang_code_now')
-parser.add_argument('lang_code_renaming')
+parser = argparse.ArgumentParser(
+        description='Renames or creates (if not present) user \
+                     folders and changes the ".config/user-dirs.dirs" \
+                     and ".config/user-dirs.locale" files to the \
+                     appropriate language.\
+                     Currently only 2 languages are supported:\
+                     ru_RU and en_US'
+        )
+parser.add_argument('lang_code_now', help='current folder language code (can be viewed in ".config/user-dirs.locale")')
+parser.add_argument('lang_code_renaming', help='language code to which you want to rename folders')
 args = parser.parse_args()
 
 if args.lang_code_now not in langs or args.lang_code_renaming not in langs:
@@ -73,4 +80,3 @@ for folder in renamed_dirs.values():
     except FileExistsError:
         continue
     print(f'create "{folder}"')
-
